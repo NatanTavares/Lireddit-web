@@ -1,0 +1,12 @@
+mutation RegisterUser($registerUserCredentials: ParamsRegister!) {
+  registerUser(credentials: $registerUserCredentials) {
+    errors {
+      field
+      message
+    }
+    user {
+      id
+      username
+    }
+  }
+}

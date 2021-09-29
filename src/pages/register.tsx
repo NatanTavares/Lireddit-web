@@ -1,28 +1,13 @@
+import { useRegisterUserMutation } from "../generated/graphql";
 import { InputField } from "../components/InputField";
 import { Wrapper } from "../components/Wrapper";
 import { Button, Stack } from "@chakra-ui/react";
 import { Formik, Form } from "formik";
 import type { NextPage } from "next";
-import { useMutation } from "urql";
 import Head from "next/head";
 
-const REGISTER_MUT = `
-  mutation RegisterUserMutation($registerUserCredentials: ParamsRegister!) {
-    registerUser(credentials: $registerUserCredentials) {
-      errors {
-        message
-        field
-      }
-      user {
-        username
-        id
-      }
-    }
-  }
-`;
-
 const Register: NextPage = () => {
-  const [_, register] = useMutation(REGISTER_MUT);
+  const [_, register] = useRegisterUserMutation();
 
   return (
     <>
@@ -33,12 +18,13 @@ const Register: NextPage = () => {
       <Wrapper variant="small">
         <Formik
           initialValues={{ username: "", password: "" }}
-          onSubmit={({ username, password }) => {
+          onSubmit={async ({ username, password }) => {
             const registerUserCredentials = {
               username,
               password,
             };
-            return register({ registerUserCredentials });
+
+            const { data } = await register({ registerUserCredentials });
           }}
         >
           {({ isSubmitting }) => (
