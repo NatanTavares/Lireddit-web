@@ -112,6 +112,25 @@ export type UserResponse = {
   user?: Maybe<User>;
 };
 
+export type LoginMutationVariables = Exact<{
+  loginCredentials: ParamsRegister;
+}>;
+
+export type LoginMutation = {
+  __typename?: "Mutation";
+  login: {
+    __typename?: "UserResponse";
+    errors?:
+      | Array<{ __typename?: "FieldError"; field: string; message: string }>
+      | null
+      | undefined;
+    user?:
+      | { __typename?: "User"; id: string; username: string }
+      | null
+      | undefined;
+  };
+};
+
 export type RegisterUserMutationVariables = Exact<{
   registerUserCredentials: ParamsRegister;
 }>;
@@ -131,6 +150,24 @@ export type RegisterUserMutation = {
   };
 };
 
+export const LoginDocument = gql`
+  mutation Login($loginCredentials: ParamsRegister!) {
+    login(credentials: $loginCredentials) {
+      errors {
+        field
+        message
+      }
+      user {
+        id
+        username
+      }
+    }
+  }
+`;
+
+export function useLoginMutation() {
+  return Urql.useMutation<LoginMutation, LoginMutationVariables>(LoginDocument);
+}
 export const RegisterUserDocument = gql`
   mutation RegisterUser($registerUserCredentials: ParamsRegister!) {
     registerUser(credentials: $registerUserCredentials) {

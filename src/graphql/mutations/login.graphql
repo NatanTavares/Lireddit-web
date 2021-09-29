@@ -1,0 +1,12 @@
+mutation Login($loginCredentials: ParamsRegister!) {
+  login(credentials: $loginCredentials) {
+    errors {
+      field
+      message
+    }
+    user {
+      id
+      username
+    }
+  }
+}
