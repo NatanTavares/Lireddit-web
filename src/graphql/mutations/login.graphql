@@ -1,12 +1,10 @@
 mutation Login($loginCredentials: ParamsRegister!) {
   login(credentials: $loginCredentials) {
     errors {
-      field
-      message
+      ...RegularErrors
     }
     user {
-      id
-      username
+      ...RegularUser
     }
   }
 }

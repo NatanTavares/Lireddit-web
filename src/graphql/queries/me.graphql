@@ -1,12 +1,10 @@
 query Me {
   me {
     errors {
-      field
-      message
+      ...RegularErrors
     }
     user {
-      id
-      username
+      ...RegularUser
     }
   }
 }

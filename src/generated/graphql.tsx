@@ -113,6 +113,10 @@ export type UserResponse = {
   user?: Maybe<User>;
 };
 
+export type RegularErrorsFragment = { __typename?: 'FieldError', field: string, message: string };
+
+export type RegularUserFragment = { __typename?: 'User', id: string, username: string };
+
 export type LoginMutationVariables = Exact<{
   loginCredentials: ParamsRegister;
 }>;
@@ -132,21 +136,31 @@ export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type MeQuery = { __typename?: 'Query', me?: { __typename?: 'UserResponse', errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null | undefined, user?: { __typename?: 'User', id: string, username: string } | null | undefined } | null | undefined };
 
-
+export const RegularErrorsFragmentDoc = gql`
+    fragment RegularErrors on FieldError {
+  field
+  message
+}
+    `;
+export const RegularUserFragmentDoc = gql`
+    fragment RegularUser on User {
+  id
+  username
+}
+    `;
 export const LoginDocument = gql`
     mutation Login($loginCredentials: ParamsRegister!) {
   login(credentials: $loginCredentials) {
     errors {
-      field
-      message
+      ...RegularErrors
     }
     user {
-      id
-      username
+      ...RegularUser
     }
   }
 }
-    `;
+    ${RegularErrorsFragmentDoc}
+${RegularUserFragmentDoc}`;
 
 export function useLoginMutation() {
   return Urql.useMutation<LoginMutation, LoginMutationVariables>(LoginDocument);
@@ -155,16 +169,15 @@ export const RegisterUserDocument = gql`
     mutation RegisterUser($registerUserCredentials: ParamsRegister!) {
   registerUser(credentials: $registerUserCredentials) {
     errors {
-      field
-      message
+      ...RegularErrors
     }
     user {
-      id
-      username
+      ...RegularUser
     }
   }
 }
-    `;
+    ${RegularErrorsFragmentDoc}
+${RegularUserFragmentDoc}`;
 
 export function useRegisterUserMutation() {
   return Urql.useMutation<RegisterUserMutation, RegisterUserMutationVariables>(RegisterUserDocument);
@@ -173,16 +186,15 @@ export const MeDocument = gql`
     query Me {
   me {
     errors {
-      field
-      message
+      ...RegularErrors
     }
     user {
-      id
-      username
+      ...RegularUser
     }
   }
 }
-    `;
+    ${RegularErrorsFragmentDoc}
+${RegularUserFragmentDoc}`;
 
 export function useMeQuery(options: Omit<Urql.UseQueryArgs<MeQueryVariables>, 'query'> = {}) {
   return Urql.useQuery<MeQuery>({ query: MeDocument, ...options });
