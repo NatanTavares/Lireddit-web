@@ -1,8 +1,9 @@
-import { createClient, debugExchange, fetchExchange, Provider } from "urql";
 import { Cache, cacheExchange, QueryInput } from "@urql/exchange-graphcache";
+import { createClient, debugExchange, fetchExchange, Provider } from "urql";
 import { ChakraProvider } from "@chakra-ui/react";
 import {
   LoginMutation,
+  LogoutMutation,
   MeDocument,
   MeQuery,
   RegisterUserMutation,
@@ -47,6 +48,15 @@ function MyApp({ Component, pageProps }: AppProps) {
                     };
                   }
                 }
+              );
+            },
+
+            logout: (_result, _, cache) => {
+              betterUpdateQuery<LogoutMutation, MeQuery>(
+                cache,
+                { query: MeDocument },
+                _result,
+                () => ({ me: null })
               );
             },
 

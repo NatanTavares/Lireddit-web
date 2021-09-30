@@ -1,17 +1,15 @@
+import { useLogoutMutation, useMeQuery } from "../generated/graphql";
+import NextLink from "next/link";
 import {
   Button,
   Breadcrumb,
   BreadcrumbItem,
   BreadcrumbLink,
-  Text,
 } from "@chakra-ui/react";
-import { useMeQuery } from "../generated/graphql";
-import NextLink from "next/link";
 
-type Props = {};
-
-export const NavigationBar: React.FC<Props> = () => {
+export const NavigationBar: React.FC = () => {
   const [{ data }] = useMeQuery();
+  const [{ fetching: logoutFeting }, logout] = useLogoutMutation();
 
   return (
     <>
@@ -27,11 +25,16 @@ export const NavigationBar: React.FC<Props> = () => {
             <Button variant="ghost" size="sm">
               {data?.me?.user?.username}
             </Button>
-            {/* <Text>{data?.me?.user?.username}</Text> */}
           </BreadcrumbItem>
 
           <BreadcrumbItem>
-            <Button colorScheme="teal" variant="ghost" size="sm">
+            <Button
+              colorScheme="teal"
+              variant="ghost"
+              size="sm"
+              onClick={() => logout()}
+              isLoading={logoutFeting}
+            >
               Logout
             </Button>
           </BreadcrumbItem>
