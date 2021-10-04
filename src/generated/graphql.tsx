@@ -90,11 +90,6 @@ export type QueryPostArgs = {
   id: Scalars['Int'];
 };
 
-
-export type QueryPostsArgs = {
-  perPage: Scalars['Int'];
-};
-
 /** The user model */
 export type User = {
   __typename?: 'User';
@@ -141,6 +136,11 @@ export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type MeQuery = { __typename?: 'Query', me?: { __typename?: 'UserResponse', errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null | undefined, user?: { __typename?: 'User', id: string, username: string } | null | undefined } | null | undefined };
+
+export type PostsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type PostsQuery = { __typename?: 'Query', posts: Array<{ __typename?: 'Post', id: string, title: string, createdAt: any, updatedAt: any }> };
 
 export const RegularErrorsFragmentDoc = gql`
     fragment RegularErrors on FieldError {
@@ -213,4 +213,18 @@ ${RegularUserFragmentDoc}`;
 
 export function useMeQuery(options: Omit<Urql.UseQueryArgs<MeQueryVariables>, 'query'> = {}) {
   return Urql.useQuery<MeQuery>({ query: MeDocument, ...options });
+};
+export const PostsDocument = gql`
+    query Posts {
+  posts {
+    id
+    title
+    createdAt
+    updatedAt
+  }
+}
+    `;
+
+export function usePostsQuery(options: Omit<Urql.UseQueryArgs<PostsQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<PostsQuery>({ query: PostsDocument, ...options });
 };

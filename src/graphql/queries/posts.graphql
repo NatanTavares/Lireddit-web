@@ -1,0 +1,17 @@
+# query Posts($postsPerPage: Int!) {
+#   posts(perPage: $postsPerPage) {
+#     id
+#     title
+#     createdAt
+#     updatedAt
+#   }
+# }
+
+query Posts {
+  posts {
+    id
+    title
+    createdAt
+    updatedAt
+  }
+}

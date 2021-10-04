@@ -1,8 +1,11 @@
-import Head from "next/head";
-import type { NextPage } from "next";
 import { NavigationBar } from "../components/NavigationBar";
+import { usePostsQuery } from "../generated/graphql";
+import type { NextPage } from "next";
+import Head from "next/head";
 
 const Home: NextPage = () => {
+  const [{ data }] = usePostsQuery();
+
   return (
     <>
       <Head>
@@ -11,6 +14,7 @@ const Home: NextPage = () => {
 
       <main>
         <NavigationBar />
+        {!!data && data.posts.map((post) => <p key={post.id}>{post.title}</p>)}
       </main>
     </>
   );
