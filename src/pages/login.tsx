@@ -1,8 +1,10 @@
+import { createUrqlClient } from "../utils/createUrqlClient";
 import { useLoginMutation } from "../generated/graphql";
 import { InputField } from "../components/InputField";
 import { toErrorMap } from "../utils/toErrorMap";
 import { Button, Stack } from "@chakra-ui/react";
 import { Wrapper } from "../components/Wrapper";
+import { withUrqlClient } from "next-urql";
 import { useRouter } from "next/router";
 import { Formik, Form } from "formik";
 import type { NextPage } from "next";
@@ -68,4 +70,4 @@ const Login: NextPage = () => {
   );
 };
 
-export default Login;
+export default withUrqlClient(createUrqlClient)(Login);

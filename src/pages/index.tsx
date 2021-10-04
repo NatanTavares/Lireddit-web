@@ -1,6 +1,8 @@
 import Head from "next/head";
 import type { NextPage } from "next";
+import { withUrqlClient } from "next-urql";
 import { NavigationBar } from "../components/NavigationBar";
+import { createUrqlClient } from "../utils/createUrqlClient";
 
 const Home: NextPage = () => {
   return (
@@ -16,4 +18,4 @@ const Home: NextPage = () => {
   );
 };
 
-export default Home;
+export default withUrqlClient(createUrqlClient, { ssr: true })(Home);
