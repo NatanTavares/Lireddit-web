@@ -1,12 +1,16 @@
-import { useRegisterUserMutation } from "../generated/graphql";
+import Head from "next/head";
+import type { NextPage } from "next";
+import { useRouter } from "next/router";
+import { withUrqlClient } from "next-urql";
+
 import { InputField } from "../components/InputField";
-import { toErrorMap } from "../utils/toErrorMap";
 import { Button, Stack } from "@chakra-ui/react";
 import { Wrapper } from "../components/Wrapper";
-import { useRouter } from "next/router";
-import { Formik, Form } from "formik";
-import type { NextPage } from "next";
-import Head from "next/head";
+import { Form, Formik } from "formik";
+
+import { useRegisterUserMutation } from "../generated/graphql";
+import { createUrqlClient } from "../utils/createUrqlClient";
+import { toErrorMap } from "../utils/toErrorMap";
 
 const Register: NextPage = () => {
   const router = useRouter();
@@ -68,4 +72,4 @@ const Register: NextPage = () => {
   );
 };
 
-export default Register;
+export default withUrqlClient(createUrqlClient)(Register);
