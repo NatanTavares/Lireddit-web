@@ -1,4 +1,5 @@
 import { useLogoutMutation, useMeQuery } from "../generated/graphql";
+import { isServer } from "../utils/isServer";
 import NextLink from "next/link";
 import {
   Button,
@@ -8,8 +9,10 @@ import {
 } from "@chakra-ui/react";
 
 export const NavigationBar: React.FC = () => {
-  const [{ data }] = useMeQuery();
   const [{ fetching: logoutFeting }, logout] = useLogoutMutation();
+  const [{ data }] = useMeQuery({
+    pause: isServer(),
+  });
 
   return (
     <>
